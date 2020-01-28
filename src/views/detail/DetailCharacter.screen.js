@@ -10,21 +10,20 @@
 
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, ScrollView} from 'react-native';
-import {styles} from './DetailCharacter.styles';
+import {
+  DetailContainer,
+  ContainerTransparent,
+  CharacterImage,
+  TextName,
+  TextDescription,
+  TextInfo,
+  ViewDescription,
+  RowTextContainer,
+} from './DetailCharacter.styles';
 import {GetCharacter} from '~/services/DetailCharacterService';
 import Container from '~/components/ui/container/Container';
 
 const DetailCharacter = ({navigation}) => {
-  const {
-    container,
-    image,
-    textName,
-    containerTransparent,
-    textInfo,
-    textDescription,
-    viewDescription,
-  } = styles;
-
   const [character, setCharacter] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,10 +55,10 @@ const DetailCharacter = ({navigation}) => {
    */
   const renderForms = (title, description) => {
     return (
-      <View style={viewDescription}>
-        <Text style={textInfo}>{title}</Text>
-        <Text style={textDescription}>{description}</Text>
-      </View>
+      <ViewDescription>
+        <TextInfo>{title}</TextInfo>
+        <TextDescription>{description}</TextDescription>
+      </ViewDescription>
     );
   };
 
@@ -67,38 +66,29 @@ const DetailCharacter = ({navigation}) => {
     <Container>
       <View>
         {character && (
-          <View style={container}>
+          <DetailContainer>
             <ScrollView>
-              <View style={containerTransparent}>
-                <Image
+              <ContainerTransparent>
+                <CharacterImage
                   source={{uri: character.image}}
                   resizeMode="contain"
-                  style={image}
                 />
-                <Text style={textName}>{character.name}</Text>
+                <TextName>{character.name}</TextName>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
+                <RowTextContainer>
                   {renderForms('Status:', character.status)}
                   {renderForms('Specie:', character.species)}
-                </View>
+                </RowTextContainer>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
+                <RowTextContainer>
                   {renderForms('Created:', getData(character.created))}
                   {renderForms('Gender:', character.gender)}
-                </View>
+                </RowTextContainer>
                 {renderForms('Origin:', character.origin.name)}
                 {renderForms('Location:', character.location.name)}
-              </View>
+              </ContainerTransparent>
             </ScrollView>
-          </View>
+          </DetailContainer>
         )}
       </View>
     </Container>
